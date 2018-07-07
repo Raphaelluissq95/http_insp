@@ -1,44 +1,52 @@
-#include "lib.h"
+#include <cstdlib>
+#include <cstdio>
+#include <memory>
 
+#include "Server.h"
+#include "Header.h"
 
-Server::Server(int portNum) : PackIn(port), PackOut(port) {}
+Server::Server(int portNum) : requestsRcv(packIn.requestsRcv)
+							, responsesRcv(packOut.responsesRcv)
+							, packIn( portNum )
+							, packOut() {}
 
 Server::~Server() {}
 
-bool Server::Init(){
-	PackIn.Accept();
-	if(PackIn.msgReceived.size() > 0)
-		print("\nForam enviados %d pacotes.\n",(int) PackIn.msgReceived.size());
+bool Server::Init() {
+	packIn.accConn();
+	packIn.getRequests();
 
-	for(int i = 0;i < (int) PackIn.msgReceived.size();i++){
-		HTTP::Header Header(PackIn.msgReceived[i].msg);;
-		printf("\nMensagem\nDe: %s:%d\nPara: %s:%s\nMsg: %s\n"
-			, PackIn.msgReceived[i].addr_from.c_str()
-			, PackIn.msgReceived[i].port_num
-			, header.host.c_str()
-			, header.port.c_str()
-			, header.to_string(false).c_str());
-		PackOut.Send(PackIn.msgReceived[i].internConnId, header.host.c_str(), std::atoi(header.port.c_str()), PackIn.msgReceived[i].msg);
+	if(requestsRcv.size() > 0)
+		std::swap( requestsRcv, toSendRqst );
+
+	if(toSendRqst.size() > 0){
+		printf("\nEnviando requests...\n");
+		for(int i = 0;i < (int) toSendRqst.size();i++){
+			printf("\nEnviando para\n"
+			);
+			printf("\n\n"
+			);			
+		}
+
+		toSendRqst.clear();
 	}
 
-	PackIn.msgReceived.clear();
+	packOut.responseRcv();
 
-	PackOut.Messages();
-	if(PackOut.msgReceived.size() > 0)
-		printf("\nForam recebidas %d pacotes.\n", (int) PackOut.msgReceived.size());
+	if(packOut.responsesRcv.size() > 0)
+		std::swap(responsesRcv, toSendRsp);
 
-	for(int i = 0;i < (int) PackOut.msgReceived.size();i++){
-		HTTP::Header Header(PackOut.msgReceived[i].msg);
-		printf("\nMensagem\nDe: %s:%d\nPara: %s:%s\nMsg: %s\n"
-			, PackOut.msgReceived[i].addr_from.c_str()
-			, PackOut.msgReceived[i].port_num
-			, header.host.c_str()
-			, header.port.c_str()
-			, header.to_string(false).c_str());
-		PackIn.Send(PackOut.msgReceived[i].internConnId, PackOut.msgReceived[i].msg);
+	if(toSendRsp.size() > 0){
+		printf("\nEnviando responses...\n");
+		for(int i = 0;i < (int) toSendRsp.size();i++){
+			printf("\nEnviando para \n"
+			);
+			printf("\n\n"
+			);
+		}
+
+		toSendRsp.clear();
 	}
-
-	PackOut.msgReceived.clear();
 
 	return true;
 }

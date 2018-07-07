@@ -1,66 +1,60 @@
-#include "lib.h"
+#include "Header.h"
 
 namespace HTTP {
 
 Header::Header(std::string& str){
 	if(!str.empty()){
-		unsigned int first = 0;
-		unsigned int last = str.find("\r\n");
-		firstLine = str.substr(first,last);
+		unsigned int start = 0;
+		unsigned int end = str.find("\r\n");
+		startLine = str.substr(start, end);
 
-		first = last + 2;
-		while((last = str.find("\r\n", first), last) > first){
-			std::string line = str.substr( first, last-first );
-			unsigned int division = line.find( ":" );
-			std::string property = line.substr( 0, division );
-			std::string value = line.substr( division + 2 );
+		start = end + 2;
 
-			if( "Host" == property ) {
-				division = value.rfind( ":" );
-				host = value.substr( 0, division );
-				if( division < value.size() )
-					port = value.substr( division + 1 );
-				
+		while((end = str.find("\r\n", start), end) > start){
+			std::string line = str.substr(start, end-start);
+			std::string hostName = line.substr(0, (line.find(":")));
+			std::string valor = line.substr((line.find(";")) + 2);
+
+			if(hostName == "Host"){
+				host = valor.substr(0, (valor.find(":")));
+				if(valor.size() > (valor.find(":")))
+					port = valor.substr((valor.find(":")) + 2);
 			}
 
-			fields.push_back( std::make_tuple( property, value ) );
-
-			first = last + 2;
+			fields.push_back(std::make_tuple(hostName, valor));
+			
+			start = end + 2;
 		}
 
-		if( host.empty() ) {
-			unsigned int begin = firstLine.find( "//" ) + 2;
-			unsigned int end = firstLine.find( "/", begin );
-			std::string value = firstLine.substr( begin, end-begin );
-			unsigned int division = value.rfind( ":" );
-			host = value.substr( 0, division );
-			if( division < value.size() )
-				port = value.substr( division + 1 );
+		if(host.empty()){
+			unsigned int init = startLine.find("//") + 2;
+			unsigned int fim = startLine.find("//", init);
+			std::string valor = startLine.substr(init, fim - init);
+			host = valor.substr(0, (valor.rfind(":")));
+			if(valor.size() > (valor.rfind(":")))
+				port = valor.substr((valor.rfind(":")) + 2);
 		}
-		if( '[' == host[0] ) {
-			host = host.substr( 1, host.size()-2 );
-		}
-		if( port.empty() ) {
+
+		if(host[0] == '[')
+			host = host.substr(1, host.size() - 2);
+
+		if(port.empty())
 			port = "80";
-		}
 
-		body = str.substr( first + 2 );
+		body = str.substr(start + 2);
 	}
 }
 
-std::string Header::to_string( bool includeBody ) {
-	std::string request( "" );
+std::string Header::to_string(bool include){
+	std::string msg("");
 
-	request += firstLine + "\r\n";
+	msg += startLine + "\r\n";
+	for( unsigned int i = 0; i < fields.size(); i++ )
+		msg += std::get<0>( fields[i] ) + ": " + std::get<1>( fields[i] ) + "\r\n";
+	msg +="\r\n";
+	msg += include? body : "<body>";
 
-	for( unsigned int i = 0; i < fields.size(); i++ ) {
-		request += std::get<0>( fields[i] ) + ": " + std::get<1>( fields[i] ) + "\r\n";
-	}
-
-	request += "\r\n";
-	request += includeBody ? body : "<body>";
-
-	return request;
+	return msg;
 }
 
-};
+}

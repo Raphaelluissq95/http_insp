@@ -1,0 +1,40 @@
+#ifndef PACKOUT_H
+#define PACKOUT_H
+
+#include <string>
+#include <vector>
+#include <memory>
+
+#include <unistd.h>
+
+#include "Header.h"
+
+class PackOut {
+public:
+	typedef struct {
+		std::string message;
+
+		std::string addr_from;
+		int port_from;
+
+		std::string addr_to;
+		int port_to;
+
+		int host;
+		int port;
+	} msgData;
+
+	typedef std::tuple< msgData, HTTP::Header > Response;
+
+	PackOut();
+	~PackOut();
+
+	ssize_t Send( int rqstSocket, HTTP::Header msg );
+	void responseRcv();
+
+	std::vector< Response > responsesRcv;
+private:
+	std::vector< Response > rqstedSocket;
+};
+
+#endif // PACKOUT_H
