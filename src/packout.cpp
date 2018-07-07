@@ -22,7 +22,9 @@ ssize_t PackOut::Send(int rqstSocket, HTTP::Header msg){
 	return -1;
 }
 
-void PackOut::responseRcv(){
+bool PackOut::responseRcv(){
+	bool run = true;
+	
 	int valread = 0;
 	std::string message("");
 	do {
@@ -37,10 +39,15 @@ void PackOut::responseRcv(){
 		// md.port_from = ntohs( rqstSocket.addr.sin_port );
 		// md.addr_to = "127.0.0.1";
 		// md.port_to = "8228";
-		responsesRcv.push_back(std::make_tuple(md, HTTP::Header(message)));
+		responsesRcv.push_back(md);
+		run = true;
 	} else if( 0 == valread ) {
 		printf("\nNão há requests para serem lidos\n");
+		run = false;
 	} else {
 		printf( "\nFalha na leitura de dados\n" );
+		run = false;
 	}
+
+	return run;
 }

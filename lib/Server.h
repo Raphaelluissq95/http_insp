@@ -13,10 +13,11 @@ public:
 	~Server();
 	bool Init();
 	
-	std::vector< PackIn::Request > &requestsRcv;
-	std::vector< PackIn::Request > toSendRqst;
-	std::vector< PackOut::Response > &responsesRcv;
-	std::vector< PackOut::Response > toSendRsp;
+	bool running;
+	std::vector< PackIn::msgData > &requestsRcv;
+	std::vector< PackIn::msgData > toSendRqst;
+	std::vector< PackOut::msgData > &responsesRcv;
+	std::vector< PackOut::msgData > toSendRsp;
 private:
 	PackIn packIn;
 	PackOut packOut;

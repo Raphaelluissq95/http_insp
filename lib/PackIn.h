@@ -32,7 +32,7 @@ public:
 	void getRequests();
 	ssize_t Send( int rcvSocket, HTTP::Header msg );
 
-	std::vector< Request > requestsRcv;
+	std::vector< msgData > requestsRcv;
 };
 
 #endif // PACKIN_H

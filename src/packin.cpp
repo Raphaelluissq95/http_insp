@@ -9,11 +9,13 @@
 
 #include "PackIn.h"
 
-int inSocket,svSocket;
+int inSocket = -1,svSocket = -1;
+int portNum;
 struct sockaddr_in server_addr;
 socklen_t size;
 
 PackIn::PackIn(int port){
+	portNum = port;
 	inSocket = socket(AF_INET, SOCK_STREAM, 0);
 	if(inSocket < 0){
 		printf("\nErro de criação de socket\n");
@@ -34,7 +36,7 @@ PackIn::PackIn(int port){
 	size = sizeof(server_addr);
 	printf("\nProcurando cliente...\n");
 
-	listen(inSocket,1);	
+	listen(inSocket,1);
 }
 
 PackIn::~PackIn() {}
@@ -54,15 +56,16 @@ void PackIn::getRequests() {
 		char buffer[1024];
 		valread = read( svSocket, buffer, sizeof( buffer ) );
 		message += std::string( buffer, valread );
+		printf("%c\n",message);
 	} while (valread == 1024);
 	if(valread > 0) {
 		msgData md;
-		// md.message = message;
-		// md.addr_from = std::string( svSocket.addr.sin_addr );
-		// md.port_from = ntohs( svSocket.addr.sin_port );
-		// md.addr_to = "127.0.0.1";
-		// md.port_to = port;
-		requestsRcv.push_back(std::make_tuple(md, HTTP::Header(message)));
+		md.message = message;
+		md.addr_from = htons( server_addr.sin_addr.s_addr );
+		md.port_from = htons( server_addr.sin_port );
+		md.addr_to = "127.0.0.1";
+		md.port_to = portNum;
+		requestsRcv.push_back(md);
 	} else if( 0 == valread ) {
 		printf("\nNão há requests para serem lidos\n");
 	} else {

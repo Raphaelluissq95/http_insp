@@ -5,7 +5,8 @@
 #include "Server.h"
 #include "Header.h"
 
-Server::Server(int portNum) : requestsRcv(packIn.requestsRcv)
+Server::Server(int portNum) : running(true)
+							, requestsRcv(packIn.requestsRcv)
 							, responsesRcv(packOut.responsesRcv)
 							, packIn( portNum )
 							, packOut() {}
@@ -20,20 +21,35 @@ bool Server::Init() {
 		std::swap( requestsRcv, toSendRqst );
 
 	if(toSendRqst.size() > 0){
-		printf("\nEnviando requests...\n");
+		printf("\nEnviando %d request...\n"
+			, (int) toSendRqst.size()
+		);
 		for(int i = 0;i < (int) toSendRqst.size();i++){
-			printf("\nEnviando para\n"
+			printf("\nEnviando request..\n");
+			printf("\nDe : %s:%d\n"
+				, toSendRqst[i].addr_from.c_str()
+				, toSendRqst[i].port_from
 			);
-			printf("\n\n"
-			);			
+			printf("\nPara : %s:%d\n"
+				, toSendRqst[i].addr_to
+				, toSendRqst[i].port_to
+			);
+			printf("\nRequest: \n\t%s\n"
+				, toSendRqst[i].message.c_str()
+			);
+			printf("Saí");
 		}
 
+		printf("Entrando no clear");
 		toSendRqst.clear();
+		printf("Saindo do clear");
 	}
 
-	packOut.responseRcv();
+	printf("%s", (running)? "true":"false");
+	running &= packOut.responseRcv();
+	printf("%s", (running)? "true":"false");
 
-	if(packOut.responsesRcv.size() > 0)
+	if(responsesRcv.size() > 0)
 		std::swap(responsesRcv, toSendRsp);
 
 	if(toSendRsp.size() > 0){
@@ -48,5 +64,5 @@ bool Server::Init() {
 		toSendRsp.clear();
 	}
 
-	return true;
+	return running;
 }
