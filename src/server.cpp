@@ -21,44 +21,34 @@ bool Server::Init() {
 		std::swap( requestsRcv, toSendRqst );
 
 	if(!toSendRqst.empty()) {
-		printf("\nEnviando %d request...\n"
-			, (int) toSendRqst.size()
-		);
+		printf("\nEnviando %d request...\n", (int) toSendRqst.size());
+
 		for (auto &i : toSendRqst) {
 			printf("\nEnviando request..\n");
-			printf("\nDe : %s:%d\n"
-				, i.addr_from.c_str()
-				, i.port_from
-			);
-			printf("\nPara : %s:%d\n"
-				, i.addr_to
-				, i.port_to
-			);
-			printf("\nRequest: \n\t%s\n"
-				, i.message.c_str()
-			);
-			printf("Saí");
+			printf("\nDe : %s:%d\n", i.addr_from.c_str(), i.port_from);
+			printf("\nPara : %s:%d\n", i.addr_to, i.port_to);
+			printf("\nRequest: \n%s\n", i.message.c_str());
+			printf("Saí\n");
 		}
 
-		printf("Entrando no clear");
+		printf("Entrando no clear\n");
 		toSendRqst.clear();
-		printf("Saindo do clear");
+		printf("Saindo do clear\n");
 	}
 
-	printf("%s", (running)? "true":"false");
+	printf("%s\n", (running)? "true":"false");
 	running &= packOut.responseRcv();
-	printf("%s", (running)? "true":"false");
+	printf("%s\n", (running)? "true":"false");
 
 	if(!responsesRcv.empty())
 		std::swap(responsesRcv, toSendRsp);
 
 	if(!toSendRsp.empty()) {
 		printf("\nEnviando responses...\n");
+
 		for(int i = 0;i < (int) toSendRsp.size();i++){
-			printf("\nEnviando para \n"
-			);
-			printf("\n\n"
-			);
+			printf("\nEnviando para \n");
+			printf("\n\n");
 		}
 
 		toSendRsp.clear();
