@@ -11,6 +11,7 @@
 
 class PackIn {
 public:
+	int svSocket = -1;
 	typedef struct {
 		std::string message;
 

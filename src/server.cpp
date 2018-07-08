@@ -26,18 +26,14 @@ bool Server::Init() {
 		for (auto &i : toSendRqst) {
 			printf("\nEnviando request..\n");
 			printf("\nDe : %s:%d\n", i.addr_from.c_str(), i.port_from);
-			printf("\nPara : %s:%d\n", i.addr_to, i.port_to);
+			printf("\nPara : %s:%d\n", i.addr_to.c_str(), i.port_to);
 			printf("\nRequest: \n%s\n", i.message.c_str());
-			printf("Saí\n");
 		}
 
-		printf("Entrando no clear\n");
 		toSendRqst.clear();
-		printf("Saindo do clear\n");
 	}
-
-	printf("%s\n", (running)? "true":"false");
-	running &= packOut.responseRcv();
+	
+	running &= packOut.responseRcv(packIn.svSocket);
 	printf("%s\n", (running)? "true":"false");
 
 	if(!responsesRcv.empty())

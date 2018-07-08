@@ -9,7 +9,7 @@
 
 #include "PackIn.h"
 
-int inSocket = -1,svSocket = -1;
+int inSocket = -1;
 int portNum;
 struct sockaddr_in server_addr;
 socklen_t size;
@@ -44,7 +44,6 @@ PackIn::~PackIn() = default;
 
 void PackIn::accConn() {
 	svSocket = accept(inSocket, (struct sockaddr*)&server_addr, &size);
-
 	if(svSocket < 0) {
 		printf("\nErro na aceitação de conexão\n");
 		exit(1);
@@ -59,7 +58,6 @@ void PackIn::getRequests() {
 		char buffer[1024];
 		valread = static_cast<int>(read(svSocket, buffer, sizeof( buffer ) ));
 		message += std::string(buffer, static_cast<unsigned long>(valread));
-		printf("%c\n", message);
 	} while (valread == 1024);
 
 	if(valread > 0) {

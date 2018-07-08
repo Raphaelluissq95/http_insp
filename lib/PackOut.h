@@ -30,11 +30,11 @@ public:
 	~PackOut();
 
 	ssize_t Send( int rqstSocket, HTTP::Header msg );
-	bool responseRcv();
+	bool responseRcv(int svSocket);
 
 	std::vector< msgData > responsesRcv;
 private:
-	std::vector< msgData > rqstedSocket;
+	int rqstedSocket;
 };
 
 #endif // PACKOUT_H
