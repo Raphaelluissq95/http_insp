@@ -35,7 +35,7 @@ DEP_FILES = $(addprefix $(DEP_PATH)/,$(addsuffix .d,$(FILE_NAMES)))
 OBJ_FILES = $(addprefix $(BIN_PATH)/,$(notdir $(CPP_FILES:.cpp=.o)))
 
 # Nome do executável
-EXEC = spider
+EXEC = aracne
 
 #---------------------------------------------------------------------
 # Caso o sistema seja windows

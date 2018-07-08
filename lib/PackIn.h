@@ -25,7 +25,8 @@ public:
 	} msgData;
 
 	typedef std::tuple< msgData, HTTP::Header > Request;
-	PackIn( int port );
+
+	explicit PackIn( int port );
 	~PackIn();
 	
 	void accConn();

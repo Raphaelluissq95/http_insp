@@ -11,31 +11,31 @@ Server::Server(int portNum) : running(true)
 							, packIn( portNum )
 							, packOut() {}
 
-Server::~Server() {}
+Server::~Server() = default;
 
 bool Server::Init() {
 	packIn.accConn();
 	packIn.getRequests();
 
-	if(requestsRcv.size() > 0)
+	if(!requestsRcv.empty())
 		std::swap( requestsRcv, toSendRqst );
 
-	if(toSendRqst.size() > 0){
+	if(!toSendRqst.empty()) {
 		printf("\nEnviando %d request...\n"
 			, (int) toSendRqst.size()
 		);
-		for(int i = 0;i < (int) toSendRqst.size();i++){
+		for (auto &i : toSendRqst) {
 			printf("\nEnviando request..\n");
 			printf("\nDe : %s:%d\n"
-				, toSendRqst[i].addr_from.c_str()
-				, toSendRqst[i].port_from
+				, i.addr_from.c_str()
+				, i.port_from
 			);
 			printf("\nPara : %s:%d\n"
-				, toSendRqst[i].addr_to
-				, toSendRqst[i].port_to
+				, i.addr_to
+				, i.port_to
 			);
 			printf("\nRequest: \n\t%s\n"
-				, toSendRqst[i].message.c_str()
+				, i.message.c_str()
 			);
 			printf("Saí");
 		}
@@ -49,10 +49,10 @@ bool Server::Init() {
 	running &= packOut.responseRcv();
 	printf("%s", (running)? "true":"false");
 
-	if(responsesRcv.size() > 0)
+	if(!responsesRcv.empty())
 		std::swap(responsesRcv, toSendRsp);
 
-	if(toSendRsp.size() > 0){
+	if(!toSendRsp.empty()) {
 		printf("\nEnviando responses...\n");
 		for(int i = 0;i < (int) toSendRsp.size();i++){
 			printf("\nEnviando para \n"

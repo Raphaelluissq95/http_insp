@@ -9,7 +9,7 @@
 
 class Server {
 public:
-	Server( int port );
+	explicit Server( int port );
 	~Server();
 	bool Init();
 	

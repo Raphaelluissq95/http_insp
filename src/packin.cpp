@@ -1,10 +1,10 @@
 #include <iostream>
-#include <string.h>
+#include <cstring>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <unistd.h>
 
 #include "PackIn.h"
@@ -25,7 +25,7 @@ PackIn::PackIn(int port){
 	printf("\nServer socket connection criado\n");
 	server_addr.sin_family = AF_INET;
 	server_addr.sin_addr.s_addr = htons(INADDR_ANY);
-	server_addr.sin_port = htons(port);
+	server_addr.sin_port = htons(static_cast<uint16_t>(port));
 
 	if(bind(inSocket, (struct sockaddr*)&server_addr, sizeof(server_addr)) < 0){
 		printf("\nErro no bind do socket\n");
@@ -39,7 +39,7 @@ PackIn::PackIn(int port){
 	listen(inSocket,1);
 }
 
-PackIn::~PackIn() {}
+PackIn::~PackIn() = default;
 
 void PackIn::accConn() {
 	svSocket = accept(inSocket, (struct sockaddr*)&server_addr, &size);
@@ -51,17 +51,17 @@ void PackIn::accConn() {
 
 void PackIn::getRequests() {
 	int valread = 0;
-	std::string message("");
+	std::string message;
 	do {
 		char buffer[1024];
-		valread = read( svSocket, buffer, sizeof( buffer ) );
-		message += std::string( buffer, valread );
+		valread = static_cast<int>(read(svSocket, buffer, sizeof( buffer ) ));
+		message += std::string(buffer, static_cast<unsigned long>(valread));
 		printf("%c\n",message);
 	} while (valread == 1024);
 	if(valread > 0) {
 		msgData md;
 		md.message = message;
-		md.addr_from = htons( server_addr.sin_addr.s_addr );
+		md.addr_from = std::to_string(htons(static_cast<uint16_t>(server_addr.sin_addr.s_addr)));
 		md.port_from = htons( server_addr.sin_port );
 		md.addr_to = "127.0.0.1";
 		md.port_to = portNum;
