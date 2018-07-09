@@ -14,6 +14,7 @@ DEP_FLAGS = -M -MT $@ -MT $(BIN_PATH)/$(*F).o -MP -MF $@
 
 # Bibliotecas a serem linkadas
 LIBS = -lm -lpthread
+LIBS += $(shell pkg-config --libs gtk+-3.0)
 
 # Diretivas de compilacao
 FLAGS = -std=c++11 -Wall -Wextra -Wno-unused-parameter -Werror=init-self
@@ -71,7 +72,7 @@ LIBS = -lm -lpthread
 endif
 endif
 
-INC_FLAGS = -I$(INC_PATH)
+INC_FLAGS = -I$(INC_PATH) $(shell pkg-config --cflags gtk+-3.0)
 LINK_PATH := $(addprefix -L,$(LINK_PATH))
 
 ##############################################################################################

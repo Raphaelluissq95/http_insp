@@ -8,33 +8,22 @@
 #include <unistd.h>
 
 #include "Header.h"
+#include "Data.h"
 
 class PackIn {
 public:
 	int svSocket = -1;
-	typedef struct {
-		std::string message;
 
-		std::string addr_from;
-		int port_from;
-
-		std::string addr_to;
-		int port_to;
-
-		int host;
-		int port;
-	} msgData;
-
-	typedef std::tuple< msgData, HTTP::Header > Request;
+	typedef std::tuple< HTTP::Header > Request;
 
 	explicit PackIn( int port );
 	~PackIn();
 	
 	void accConn();
 	void getRequests();
-	ssize_t Send( int rcvSocket, HTTP::Header msg );
+	ssize_t Send( HTTP::Header msg );
 
-	std::vector< msgData > requestsRcv;
+	std::vector< HTTP::Header > requestsRcv;
 };
 
 #endif // PACKIN_H

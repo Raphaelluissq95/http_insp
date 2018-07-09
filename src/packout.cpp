@@ -24,28 +24,22 @@ ssize_t PackOut::Send(int rqstSocket, HTTP::Header msg){
 	return -1;
 }
 
-bool PackOut::responseRcv(int svSocket){
+bool PackOut::responseRcv(){
 	bool run = true;
 	
 	int valread = 0;
-	std::string message;
+	std::string message("");
 
 	do {
 		char buffer[1024];
-		valread = static_cast<int>(read(svSocket, buffer, sizeof( buffer ) ));
+		valread = static_cast<int>(read(rqstedSocket, buffer, sizeof( buffer ) ));
 		printf("valread: %d\n", valread);
 		message += std::string(buffer, static_cast<unsigned long>(valread));
 		printf("msg: %s\n", message.c_str());
 	} while (valread == 1024);
 
 	if(valread > 0) {
-		msgData md = msgData();
-      	md.message = message;
-//        md.addr_from = std::string( rqstedSocket.addr_from.sin_addr );
-//        md.port_from = ntohs( rqstedSocket.addr.sin_port );
-//        md.addr_to = "127.0.0.1";
-//        md.port_to = "8228";
-		responsesRcv.push_back(md);
+		responsesRcv.push_back(HTTP::Header(message));
 		run = true;
 	} else if( 0 == valread ) {
 		printf("\nNão há responses para serem lidos\n");

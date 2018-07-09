@@ -13,7 +13,7 @@ Header::Header(std::string& str){
 		while((end = static_cast<unsigned int>(str.find("\r\n", start)), end) > start){
 			std::string line = str.substr(start, end-start);
 			std::string hostName = line.substr(0, (line.find(':')));
-			std::string valor = line.substr((line.find(';')) + 2);
+			std::string valor = line.substr((line.find(':')) + 2);
 
 			if(hostName == "Host"){
 				host = valor.substr(0, (valor.find(':')));

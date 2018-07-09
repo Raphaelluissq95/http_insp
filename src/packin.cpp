@@ -37,7 +37,7 @@ PackIn::PackIn(int port) {
 	size = sizeof(server_addr);
 	printf("\nProcurando cliente...\n");
 
-	listen(inSocket,1);
+	listen(inSocket,10);
 }
 
 PackIn::~PackIn() = default;
@@ -61,13 +61,7 @@ void PackIn::getRequests() {
 	} while (valread == 1024);
 
 	if(valread > 0) {
-		msgData md;
-		md.message = message;
-		md.addr_from = std::to_string(htons(static_cast<uint16_t>(server_addr.sin_addr.s_addr)));
-		md.port_from = htons( server_addr.sin_port );
-		md.addr_to = "127.0.0.1";
-		md.port_to = portNum;
-		requestsRcv.push_back(md);
+		requestsRcv.push_back(HTTP::Header(message));
 	} else if( 0 == valread ) {
 		printf("\nNão há requests para serem lidos\n");
 	} else {
@@ -75,8 +69,8 @@ void PackIn::getRequests() {
 	}
 }
 
-ssize_t PackIn::Send(int rcvSocket, HTTP::Header msg){
-	ssize_t sent = send(rcvSocket, msg.to_string().c_str(), msg.to_string().length(), 0);
+ssize_t PackIn::Send(HTTP::Header msg){
+	ssize_t sent = send(inSocket, msg.to_string().c_str(), msg.to_string().length(), 0);
 
 	if(sent < 0){
 		printf("\nNão foi possível enviar dado\n");

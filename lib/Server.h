@@ -6,6 +6,7 @@
 #include "PackOut.h"
 #include "PackIn.h"
 #include "Header.h"
+#include "Data.h"
 
 class Server {
 public:
@@ -14,10 +15,10 @@ public:
 	bool Init();
 	
 	bool running;
-	std::vector< PackIn::msgData > &requestsRcv;
-	std::vector< PackIn::msgData > toSendRqst;
-	std::vector< PackOut::msgData > &responsesRcv;
-	std::vector< PackOut::msgData > toSendRsp;
+	std::vector< HTTP::Header > &requestsRcv;
+	std::vector< HTTP::Header > toSendRqst;
+	std::vector< HTTP::Header > &responsesRcv;
+	std::vector< HTTP::Header > toSendRsp;
 private:
 	PackIn packIn;
 	PackOut packOut;

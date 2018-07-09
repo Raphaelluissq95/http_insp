@@ -24,27 +24,31 @@ bool Server::Init() {
 		printf("\nEnviando %d request...\n", (int) toSendRqst.size());
 
 		for (auto &i : toSendRqst) {
-			printf("\nEnviando request..\n");
-			printf("\nDe : %s:%d\n", i.addr_from.c_str(), i.port_from);
-			printf("\nPara : %s:%d\n", i.addr_to.c_str(), i.port_to);
-			printf("\nRequest: \n%s\n", i.message.c_str());
+			printf("\nRequest: \n%s\n", i.to_string(false).c_str());
+			if(packOut.Send(packIn.svSocket, i) == -1){
+				printf("\nNão foi possível enivar request\n");
+				exit(1);
+			}
 		}
-
+		
 		toSendRqst.clear();
 	}
 	
-	running &= packOut.responseRcv(packIn.svSocket);
+	running &= packOut.responseRcv();
 	printf("%s\n", (running)? "true":"false");
 
 	if(!responsesRcv.empty())
 		std::swap(responsesRcv, toSendRsp);
 
 	if(!toSendRsp.empty()) {
-		printf("\nEnviando responses...\n");
+		printf("\nEnviando %d responses...\n", (int) toSendRsp.size());
 
-		for(int i = 0;i < (int) toSendRsp.size();i++){
-			printf("\nEnviando para \n");
-			printf("\n\n");
+		for(auto &i : toSendRsp) {
+			printf("\nResponse: \n%s\n", i.to_string(false).c_str());
+			if(packIn.Send(i) == -1){
+				printf("\nNão foi possível enivar response\n");
+				exit(1);
+			}
 		}
 
 		toSendRsp.clear();

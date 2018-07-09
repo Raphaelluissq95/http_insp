@@ -8,31 +8,19 @@
 #include <unistd.h>
 
 #include "Header.h"
+#include "Data.h"
 
 class PackOut {
 public:
-	typedef struct {
-		std::string message;
-
-		std::string addr_from;
-		int port_from;
-
-		std::string addr_to;
-		int port_to;
-
-		int host;
-		int port;
-	} msgData;
-
-	typedef std::tuple< msgData, HTTP::Header > Response;
+	typedef std::tuple< HTTP::Header > Response;
 
 	PackOut();
 	~PackOut();
 
 	ssize_t Send( int rqstSocket, HTTP::Header msg );
-	bool responseRcv(int svSocket);
+	bool responseRcv();
 
-	std::vector< msgData > responsesRcv;
+	std::vector< HTTP::Header > responsesRcv;
 private:
 	int rqstedSocket;
 };
