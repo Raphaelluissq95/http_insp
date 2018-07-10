@@ -43,7 +43,7 @@ PackIn::PackIn(int port) {
 PackIn::~PackIn() = default;
 
 void PackIn::accConn() {
-	svSocket = accept(inSocket, (struct sockaddr*)&server_addr, &size);
+	svSocket = accept(inSocket, nullptr, nullptr);
 	if(svSocket < 0) {
 		printf("\nErro na aceitação de conexão\n");
 		exit(1);

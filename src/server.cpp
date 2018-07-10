@@ -21,11 +21,12 @@ bool Server::Init() {
 		std::swap( requestsRcv, toSendRqst );
 
 	if(!toSendRqst.empty()) {
-		printf("\nEnviando %d request...\n", (int) toSendRqst.size());
+		printf("\nEnviando %d request(s)...\n", (int) toSendRqst.size());
 
 		for (auto &i : toSendRqst) {
-			printf("\nRequest: \n%s\n", i.to_string(false).c_str());
-			if(packOut.Send(packIn.svSocket, i) == -1){
+			printf("\nEnviando request para %s:%s\n", i.host.c_str(), i.port.c_str());
+			printf("\n%s\n", i.to_string(false).c_str());
+			if(packOut.Send(i) == -1){
 				printf("\nNão foi possível enivar request\n");
 				exit(1);
 			}
@@ -35,13 +36,12 @@ bool Server::Init() {
 	}
 	
 	running &= packOut.responseRcv();
-	printf("%s\n", (running)? "true":"false");
 
 	if(!responsesRcv.empty())
 		std::swap(responsesRcv, toSendRsp);
 
 	if(!toSendRsp.empty()) {
-		printf("\nEnviando %d responses...\n", (int) toSendRsp.size());
+		printf("\nEnviando %d response(s)...\n", (int) toSendRsp.size());
 
 		for(auto &i : toSendRsp) {
 			printf("\nResponse: \n%s\n", i.to_string(false).c_str());

@@ -42,6 +42,10 @@ Header::Header(std::string& str){
 			port = "80";
 
 		body = str.substr(start + 2);
+		printf("\nbody:\n%s\n", body.c_str());
+		if(!body.empty()){
+			// Dump.dumpHTML(body);
+		}
 	}
 }
 
@@ -52,7 +56,7 @@ std::string Header::to_string(bool include){
 	for (auto &i : fields)
         msg += std::get<0>(i) + ": " + std::get<1>(i) + "\r\n";
 	msg +="\r\n";
-	msg += include? body : "<body>";
+	msg += include? body : "";
 
 	return msg;
 }

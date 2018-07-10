@@ -17,12 +17,10 @@ public:
 	PackOut();
 	~PackOut();
 
-	ssize_t Send( int rqstSocket, HTTP::Header msg );
+	ssize_t Send( HTTP::Header msg );
 	bool responseRcv();
 
 	std::vector< HTTP::Header > responsesRcv;
-private:
-	int rqstedSocket;
 };
 
 #endif // PACKOUT_H
