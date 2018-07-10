@@ -23,18 +23,12 @@ Header::Header(std::string& msg) {
         auto end = static_cast<unsigned int>(msg.find("\r\n"));
 		startLine = msg.substr(start, end);
 
-		if(startLine.find( "HTTP/1.1" ) == 0){
-			startLine = "";
-			body = msg;
-			return;
-		}
-
 		start = end + 2;
 
 		while((end = static_cast<unsigned int>(msg.find("\r\n", start)), end) > start){
-			std::string line = msg.substr(start, end-start);
-			std::string hostName = line.substr(0, (line.find(':')));
-			std::string valor = line.substr((line.find(':')) + 2);
+			std::string linha = msg.substr(start, end-start);
+			std::string hostName = linha.substr(0, (linha.find(':')));
+			std::string valor = linha.substr((linha.find(':')) + 2);
 
 			if(hostName == "Host"){
 				host = valor.substr(0, (valor.find(':')));
@@ -63,9 +57,6 @@ Header::Header(std::string& msg) {
 			port = "80";
 
 		body = msg.substr(start + 2);
-		if(!body.empty()){
-			Dump::DumpHTML( body );
-		}
 	}
 }
 
@@ -84,6 +75,10 @@ std::string Header::to_string(bool include){
         msg += std::get<0>(i) + ": " + std::get<1>(i) + "\r\n";
 	msg +="\r\n";
 	msg += include? body : "";
+
+	if(include){
+		Dump::DumpHTML( body );
+	}
 
 	return msg;
 }
