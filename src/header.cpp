@@ -2,16 +2,22 @@
 
 namespace HTTP {
 
-Header::Header(std::string& str) {
-	if(!str.empty()){
+Header::Header(std::string& msg) {
+	if(!msg.empty()){
 		unsigned int start = 0;
-        auto end = static_cast<unsigned int>(str.find("\r\n"));
-		startLine = str.substr(start, end);
+        auto end = static_cast<unsigned int>(msg.find("\r\n"));
+		startLine = msg.substr(start, end);
+
+		if(startLine.find( "HTTP/1.1" ) == 0){
+			startLine = "";
+			body = msg;
+			return;
+		}
 
 		start = end + 2;
 
-		while((end = static_cast<unsigned int>(str.find("\r\n", start)), end) > start){
-			std::string line = str.substr(start, end-start);
+		while((end = static_cast<unsigned int>(msg.find("\r\n", start)), end) > start){
+			std::string line = msg.substr(start, end-start);
 			std::string hostName = line.substr(0, (line.find(':')));
 			std::string valor = line.substr((line.find(':')) + 2);
 
@@ -24,7 +30,6 @@ Header::Header(std::string& str) {
 			fields.push_back(std::make_tuple(hostName, valor));
 			
 			start = end + 2;
-
 		}
 
 		if(host.empty()){
@@ -42,7 +47,7 @@ Header::Header(std::string& str) {
 		if(port.empty())
 			port = "80";
 
-		body = str.substr(start + 2);
+		body = msg.substr(start + 2);
 		if(!body.empty()){
 			Dump::DumpHTML( body );
 		}

@@ -12,9 +12,8 @@ class Server {
 public:
 	explicit Server( int port );
 	~Server();
-	bool Init();
+	void Init();
 	
-	bool running;
 	std::vector< HTTP::Header > &requestsRcv;
 	std::vector< HTTP::Header > toSendRqst;
 	std::vector< HTTP::Header > &responsesRcv;

@@ -70,8 +70,7 @@ void PackIn::getRequests() {
 }
 
 ssize_t PackIn::Send(HTTP::Header msg){
-	ssize_t sent = send(inSocket, msg.to_string().c_str(), msg.to_string().length(), 0);
-
+	ssize_t sent = send(svSocket, msg.to_string().c_str(), msg.to_string().length(), 0);
 	if(sent < 0){
 		printf("\nNão foi possível enviar dado\n");
 		exit(1);

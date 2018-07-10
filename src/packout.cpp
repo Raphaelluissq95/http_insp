@@ -48,9 +48,7 @@ ssize_t PackOut::Send(HTTP::Header msg){
 	return -1;
 }
 
-bool PackOut::responseRcv(){
-	bool run = true;
-	
+void PackOut::responseRcv(){
 	int valread = 0;
 	std::string message("");
 
@@ -62,14 +60,8 @@ bool PackOut::responseRcv(){
 
 	if(valread > 0) {
 		responsesRcv.push_back(HTTP::Header(message));
-		run = true;
-	} else if( 0 == valread ) {
-		printf("\nNão há responses para serem lidos\n");
-		run = false;
 	} else {
 		printf( "\nFalha na leitura de dados\n" );
-		run = false;
+		exit(1);
 	}
-
-	return run;
 }

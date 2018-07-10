@@ -12,13 +12,11 @@
 
 class PackOut {
 public:
-	typedef std::tuple< HTTP::Header > Response;
-
 	PackOut();
 	~PackOut();
 
 	ssize_t Send( HTTP::Header msg );
-	bool responseRcv();
+	void responseRcv();
 
 	std::vector< HTTP::Header > responsesRcv;
 };

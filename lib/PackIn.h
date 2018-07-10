@@ -14,8 +14,6 @@ class PackIn {
 public:
 	int svSocket = -1;
 
-	typedef std::tuple< HTTP::Header > Request;
-
 	explicit PackIn( int port );
 	~PackIn();
 	

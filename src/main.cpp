@@ -32,7 +32,7 @@ int main(int argc, char * const argv[]) {
 
 	Server server((int) port);
 
-	while(server.Init());
+    server.Init();
 
 	return 0;
 }
