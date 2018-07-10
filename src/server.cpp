@@ -1,3 +1,13 @@
+/**
+ * @file server.cpp
+ * @brief Código responsável pela execução do servidor proxy
+
+ * Neste módulo, será feito um loop para que seja possível escutar todas as requisições e respostas HTTP e direcionado para o socket correto.
+ *
+ * @author Raphael Queiroz
+ * @author Felipe Brandão
+*/
+
 #include <cstdlib>
 #include <cstdio>
 #include <memory>
@@ -12,6 +22,13 @@ Server::Server(int portNum) : requestsRcv(packIn.requestsRcv)
 
 Server::~Server() = default;
 
+/**
+ * @fn Init()
+ * @brief Código responsável pelo loop do servidor proxy
+ *
+ * @param
+ * @return
+*/
 void Server::Init() {
 	while(1){
 		packIn.accConn();

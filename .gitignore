@@ -1,6 +1,7 @@
 spider
 bin/*
 dep/*
+latex/*
 
 \.idea/codeStyles/Project\.xml
 

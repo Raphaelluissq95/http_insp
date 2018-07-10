@@ -1,5 +1,12 @@
 #include "Ui.h"
 
+GtkApplication *app;
+GtkWidget *window;
+GtkWidget *grid;
+GtkWidget *button;
+GtkWidget *scrolled, *view;
+GtkWidget *scrolled2, *view2;
+
 void print_btn_msg (GtkWidget *widget, gpointer data) {
   g_print ("Fowarding request\n");
 }

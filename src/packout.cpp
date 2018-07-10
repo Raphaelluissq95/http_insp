@@ -1,3 +1,12 @@
+/**
+ * @file packout.cpp
+ * @brief Código responsável pelo manuseio do socket de saída do proxy
+ *
+ * Neste módulo, será feito a criação do socket do proxy e a linkagem com o servidor que deseja acessar para que seja possível interceptar o response.
+ *
+ * @author Raphael Queiroz
+ * @author Felipe Brandão
+*/
 #include<cstdlib>
 #include<cstdio>
 #include<sys/socket.h>
@@ -17,6 +26,13 @@ int outSocket = -1;
 struct addrinfo client_addr;
 struct addrinfo *addr_c;
 
+/**
+ * @fn Send()
+ * @brief Código responsável pela criação e envio do socket de saída do proxy
+ *
+ * @param msg - mensagem recebida da intercepção já no formato HTTP
+ * @return sent - valor de checagem de mensagem enviada ou não (0 para mensagem enviada, c.c. mensagem não enviada)
+*/
 ssize_t PackOut::Send(HTTP::Header msg){
 	client_addr.ai_family = AF_INET;
 	client_addr.ai_socktype = INADDR_ANY;
@@ -48,6 +64,13 @@ ssize_t PackOut::Send(HTTP::Header msg){
 	return -1;
 }
 
+/**
+ * @fn responsesRcv()
+ * @brief Código responsável por receber os responses enviados pelo servidor
+ *
+ * @param
+ * @return
+*/
 void PackOut::responseRcv(){
 	int valread = 0;
 	std::string message("");
