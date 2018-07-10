@@ -2,7 +2,7 @@
 
 namespace HTTP {
 
-Header::Header(std::string& str){
+Header::Header(std::string& str) {
 	if(!str.empty()){
 		unsigned int start = 0;
         auto end = static_cast<unsigned int>(str.find("\r\n"));
@@ -24,6 +24,7 @@ Header::Header(std::string& str){
 			fields.push_back(std::make_tuple(hostName, valor));
 			
 			start = end + 2;
+
 		}
 
 		if(host.empty()){
@@ -42,9 +43,8 @@ Header::Header(std::string& str){
 			port = "80";
 
 		body = str.substr(start + 2);
-		printf("\nbody:\n%s\n", body.c_str());
 		if(!body.empty()){
-			// Dump.dumpHTML(body);
+			Dump::DumpHTML( body );
 		}
 	}
 }

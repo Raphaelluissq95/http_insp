@@ -25,7 +25,7 @@ bool Server::Init() {
 
 		for (auto &i : toSendRqst) {
 			printf("\nEnviando request para %s:%s\n", i.host.c_str(), i.port.c_str());
-			printf("\n%s\n", i.to_string(false).c_str());
+			printf("\n%s\n", i.to_string().c_str());
 			if(packOut.Send(i) == -1){
 				printf("\nNão foi possível enivar request\n");
 				exit(1);
@@ -44,7 +44,7 @@ bool Server::Init() {
 		printf("\nEnviando %d response(s)...\n", (int) toSendRsp.size());
 
 		for(auto &i : toSendRsp) {
-			printf("\nResponse: \n%s\n", i.to_string(false).c_str());
+			printf("\nResponse: \n%s\n", i.to_string().c_str());
 			if(packIn.Send(i) == -1){
 				printf("\nNão foi possível enivar response\n");
 				exit(1);

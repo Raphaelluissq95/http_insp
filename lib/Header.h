@@ -5,6 +5,8 @@
 #include <vector>
 #include <tuple>
 
+#include "Dump.h"
+
 #define field std::tuple< std::string, std::string >
 
 namespace HTTP {
