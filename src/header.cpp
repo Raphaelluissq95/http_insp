@@ -2,7 +2,7 @@
  * @file header.cpp
  * @brief Código responsável pela formatação da mensagem no formato HTTP
  *
- * Neste módulo, será feito a formatação da mensagem de resposta e requisição no formato HTTP de acordo com o estudo em sala de aul.
+ * Neste módulo, será feito a formatação da mensagem de resposta e requisição no formato HTTP de acordo com o estudo em sala de aula.
  *
  * @author Raphael Queiroz
  * @author Felipe Brandão
