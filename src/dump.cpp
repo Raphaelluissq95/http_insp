@@ -22,7 +22,7 @@ Dump::~Dump() = default;
  * @return
 */
 void Dump::DumpHTML( std::string body ){
-	auto start = static_cast<unsigned int>(body.find("<!DOCTYPE"));
+	unsigned int start = static_cast<unsigned int>(body.find("<"));
 
 	if(start == 0){
 		FILE * fp =  fopen ( "dump/dump.html", "w+" );
