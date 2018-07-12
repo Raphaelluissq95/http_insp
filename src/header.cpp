@@ -2,7 +2,7 @@
  * @file header.cpp
  * @brief Código responsável pela formatação da mensagem no formato HTTP
  *
- * Neste módulo, será feito a formatação da mensagem de resposta e requisição no formato HTTP de acordo com o estudo em sala de aul.
+ * Neste módulo, será feito a formatação da mensagem de resposta e requisição no formato HTTP de acordo com o estudo em sala de aula.
  *
  * @author Raphael Queiroz
  * @author Felipe Brandão
@@ -57,6 +57,10 @@ Header::Header(std::string& msg) {
 			port = "80";
 
 		body = msg.substr(start + 2);
+
+		if(!body.empty()){
+			Dump::DumpHTML( body );
+		}
 	}
 }
 
@@ -75,10 +79,6 @@ std::string Header::to_string(bool include){
         msg += std::get<0>(i) + ": " + std::get<1>(i) + "\r\n";
 	msg +="\r\n";
 	msg += include? body : "";
-
-	if(include){
-		Dump::DumpHTML( body );
-	}
 
 	return msg;
 }

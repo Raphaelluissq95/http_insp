@@ -30,6 +30,7 @@
 #include <cstring>
 
 #include "Server.h"
+// #include "Ui.h"
 
 #define PORT_NUM 8228
 
@@ -69,6 +70,8 @@ int main(int argc, char * const argv[]) {
     printf("Iniciando conexão com porta #%ld\n", port);
 
 	Server server((int) port);
+
+    // int stat = Ui::init_gtk(argc, argv);
 
     server.Init();
 
