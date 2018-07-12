@@ -82,3 +82,5 @@ cmake-build-debug/Makefile
 CMakeLists\.txt
 
 aracne
+
+gtkui

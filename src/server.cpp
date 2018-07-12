@@ -30,7 +30,7 @@ Server::~Server() = default;
  * @return
 */
 void Server::Init() {
-	while(1){
+	while(true){
 		packIn.accConn();
 		packIn.getRequests();
 
